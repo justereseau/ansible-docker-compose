@@ -42,4 +42,10 @@
   community.docker.docker_compose:
     project_src: "{{ item.dest | dirname }}"
     state: present
+  tags: notest
   with_items: "{{ docker_compose_templates }}"
+
+- name: Is it notest
+  set_fact:
+    is_notest: false
+  tags: notest

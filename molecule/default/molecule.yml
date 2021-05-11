@@ -8,8 +8,8 @@ driver:
   name: docker
 lint: |
   yamllint --config-file molecule/default/yaml-lint.yml .
-  ansible-lint
-  flake8 --exclude .cache/
+  ansible-lint --exclude molecule/default/yaml-lint.yml --exclude .cache/ --exclude .github/
+  flake8 --exclude .cache/,.venv/
 platforms:
   - name: debian10
     image: "geerlingguy/docker-debian10-ansible:latest"
@@ -27,8 +27,8 @@ scenario:
   name: default
   test_sequence:
     - lint
-    - destroy
     - dependency
+    - destroy
     - syntax
     - create
     - converge

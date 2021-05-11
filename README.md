@@ -1,4 +1,4 @@
-# Ansible Role: Docker Compose 
+# Ansible Role: Docker Compose [![Molecule Test](https://github.com/justereseau/ansible-docker-compose/actions/workflows/molecule-actions.yml/badge.svg)](https://github.com/justereseau/ansible-docker-compose/actions/workflows/molecule-actions.yml) 
 
 This role deploy docker-composes services on an host.
 

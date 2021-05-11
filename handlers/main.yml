@@ -5,3 +5,4 @@
     state: present
     restarted: true
   with_items: "{{ docker_compose_templates }}"
+  when: is_notest | default(false)
