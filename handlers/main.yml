@@ -1,0 +1,7 @@
+---
+- name: restart services
+  community.docker.docker_compose:
+    project_src: "{{ item.dest | dirname }}"
+    state: present
+    restarted: true
+  with_items: "{{ docker_compose_templates }}"

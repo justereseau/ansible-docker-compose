@@ -1,0 +1,14 @@
+---
+# List of all the docker-compose files to deploy. They are processed as template so that you can make them dynamics.
+docker_compose_templates:
+  - docker_compose: "path/to/files.yml.j2"
+    dest: "/opt/dockers/the_service"
+    owner: root
+    group: root
+    mode: 664
+
+docker_compose_config_files:
+  - file: "path/to/configfile.txt.j2"
+    dest: "/opt/dockers/the_service/configs/config.txt"
+    owner: root
+    group: root

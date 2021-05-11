@@ -1,0 +1,45 @@
+---
+- name: Creates the services directories
+  file:
+    path: "{{ item.dest | dirname }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  with_items: "{{ docker_compose_templates }}"
+
+- name: Install the docker-compose files
+  template:
+    src: "{{ item.docker_compose }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    validate: "/usr/local/bin/docker-compose -f %s config"
+  with_items: "{{ docker_compose_templates }}"
+  notify: restart services
+
+- name: Creates the config directories
+  file:
+    path: "{{ item.dest | dirname }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  with_items: "{{ docker_compose_config_files }}"
+
+- name: Install the config files
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ docker_compose_config_files }}"
+  notify: restart services
+
+- name: Run the services
+  community.docker.docker_compose:
+    project_src: "{{ item.dest | dirname }}"
+    state: present
+  with_items: "{{ docker_compose_templates }}"
