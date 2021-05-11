@@ -1,0 +1,34 @@
+---
+- name: Deploy Docker
+  hosts: all
+  vars:
+    pip_executable: pip3
+    pip_install_packages:
+      - docker-compose
+      - docker
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+
+- name: Converge
+  hosts: all
+  become: true
+
+  vars:
+    docker_compose_templates:
+      - docker_compose: "molecule/default/files/docker-compose.yml.j2"
+        dest: "/opt/test/docker-compose.yml"
+        owner: root
+        group: root
+        mode: 664
+
+    docker_compose_config_files: []
+
+  pre_tasks:
+    - name: Update apt cache.
+      apt:
+        update_cache: true
+      when: ansible_os_family == 'Debian'
+
+  roles:
+    - role: justereseau.docker-compose
